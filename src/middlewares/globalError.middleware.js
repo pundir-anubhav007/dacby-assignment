@@ -2,7 +2,7 @@ import logger from "../logger.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const errorHandler = (err, req, res, next) => {
-  // Handled Error
+
   if (err instanceof ApiError) {
     logger.warn(
       `[API ERROR] ${err.statusCode} - ${err.message} - ${req.originalUrl}`,

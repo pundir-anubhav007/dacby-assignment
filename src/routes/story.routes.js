@@ -1,4 +1,3 @@
-// routes/story.routes.js
 import { Router } from "express";
 import { triggerScrape, getStories } from "../controllers/story.controller.js";
 

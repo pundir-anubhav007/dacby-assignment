@@ -5,8 +5,8 @@ const storySchema = new Schema(
   {
     hnId: { type: String, required: true, unique: true },
     title: { type: String, required: true },
-    url: { type: String, default: "https://news.ycombinator.com" }, // Fallback URL
-    author: { type: String, default: "Hacker News" }, // Fallback Author
+    url: { type: String, default: "https://news.ycombinator.com" },
+    author: { type: String, default: "Hacker News" },
     points: { type: Number, default: 0 },
     postedAt: { type: String, default: "Recently" },
   },

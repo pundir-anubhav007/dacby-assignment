@@ -1,11 +1,11 @@
 // services/scraper.js
 import axios from "axios";
 import * as cheerio from "cheerio";
-// REMOVED asyncHandler import
+
 import { Story } from "../models/story.model.js";
 import logger from "../logger.js";
 
-// REMOVED asyncHandler wrapper. Just a standard async function!
+
 export const scrapeHackerNews = async () => {
   try {
     console.log("Starting Hacker News scraper...");
@@ -40,9 +40,9 @@ export const scrapeHackerNews = async () => {
     }
 
     logger.info(`Successfully scraped and saved ${stories.length} stories.`);
-    return stories; // Now this will successfully return back to your controller!
+    return stories;
   } catch (error) {
     logger.error("Scraping failed:", error.message);
-    throw error; // This throws the error up to the controller, where the controller's asyncHandler WILL catch it.
+    throw error;
   }
-}; // Removed the closing parenthesis from asyncHandler
+};

@@ -3,8 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 
-// @desc    Register a new user
-// @route   POST /api/v1/users/register
+
 export const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -30,8 +29,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, createdUser, "User registered successfully"));
 });
 
-// @desc    Login user & get token
-// @route   POST /api/v1/users/login
+
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -39,27 +37,80 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Email and password are required");
   }
 
+  
   const user = await User.findOne({ email });
+
   if (!user) {
     throw new ApiError(404, "User does not exist");
   }
 
+  // 2. Validate password
   const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
   }
 
+
   const accessToken = user.generateAccessToken();
 
-  const loggedInUser = await User.findById(user._id).select("-password");
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { user: loggedInUser, accessToken },
-        "User logged in successfully",
-      ),
+  const loggedInUser = user.toObject();
+  delete loggedInUser.password;
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        user: loggedInUser,
+        accessToken,
+
+        bookmarkIds: loggedInUser.bookmarks || [],
+      },
+      "User logged in successfully",
+    ),
+  );
+});
+
+
+
+export const toggleBookmark = asyncHandler(async (req, res) => {
+    const { storyId } = req.params;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    const isBookmarked = user.bookmarks.includes(storyId);
+
+    if (isBookmarked) {
+
+        user.bookmarks.pull(storyId);
+    } else {
+
+        user.bookmarks.push(storyId);
+    }
+
+    await user.save({ validateBeforeSave: false });
+
+    return res.status(200).json(
+        new ApiResponse(200, user.bookmarks, isBookmarked ? "Bookmark removed" : "Story bookmarked")
+    );
+});
+
+export const getBookmarkedStories = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.user._id).populate("bookmarks");
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            user.bookmarks,
+            "Bookmarked stories fetched successfully"
+        )
     );
 });
