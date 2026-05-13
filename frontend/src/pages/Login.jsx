@@ -7,7 +7,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,16 +19,16 @@ const Login = () => {
     setError("");
 
     try {
-      // Hit your login controller
+
       const response = await api.post("/users/login", formData);
 
-      // Because of your ApiResponse class, the data is inside response.data.data
+
       const { user, accessToken } = response.data.data;
 
-      // Tell the global state that this user is now logged in
+
       login(user, accessToken);
 
-      // Redirect them to the main feed
+      
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials.");

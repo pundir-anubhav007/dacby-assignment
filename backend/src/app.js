@@ -10,7 +10,10 @@ app.use(morganMiddleware);
 
 const corsOptions = {
   origin: function (origin, callback) {
-    const whitelistedOrigins = ["http://localhost:5173"];
+    const whitelistedOrigins = [
+      "http://localhost:5173",
+      process.env.FRONTEND_URL,
+    ];
     if (whitelistedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {

@@ -8,8 +8,7 @@ export const AuthProvider = ({ children }) => {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // We completely removed 'loading' and 'setLoading' because
-  // lazy initialization is instant!
+
 
   const login = (userData, token) => {
     setUser(userData);

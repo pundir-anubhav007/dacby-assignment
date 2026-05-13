@@ -11,23 +11,23 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Updates the state whenever the user types in an input field
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevents the page from refreshing on submit
-    setError(""); // Clear old errors
+    e.preventDefault();
+    setError("");
 
     try {
-      // Sending the request to your backend controller!
+
       await api.post("/users/register", formData);
 
-      // If successful, send them to the login page
+
       navigate("/login");
     } catch (err) {
-      // This catches your custom ApiError messages from the backend
+
       setError(
         err.response?.data?.message || "Registration failed. Try again.",
       );
