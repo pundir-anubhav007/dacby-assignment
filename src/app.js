@@ -31,5 +31,13 @@ app.use(express.static("public"));
 // app.use(cookieParser());
 
 
+// Routes
+import storyRouter from "./routes/story.routes.js";
+import userRouter from "./routes/user.routes.js";
+
+
+
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/stories", storyRouter);
 app.use(errorHandler);
 export { app };
