@@ -17,7 +17,7 @@ export const triggerScrape = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, stories, "Scraping completed successfully"));
 });
-// controllers/story.controller.js
+
 
 export const getStories = asyncHandler(async (req, res) => {
   // 1. Get page and limit from query, set defaults

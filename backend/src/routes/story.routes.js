@@ -4,6 +4,6 @@ import { triggerScrape, getStories } from "../controllers/story.controller.js";
 const router = Router();
 
 router.route("/scrape").post(triggerScrape);
-router.route("/getStories").get(getStories);
+router.route("/").get(getStories);
 
 export default router;
